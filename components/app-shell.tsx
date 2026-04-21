@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 import {
   MapPin, LayoutDashboard, PlusCircle, FileText, Settings, HelpCircle,
-  BarChart2, ChevronRight,
+  BarChart2,
 } from "lucide-react"
 import { useAuth } from "@/hooks/use-auth"
 import { DEMO_USER } from "@/lib/mock-data/users"
@@ -60,6 +60,34 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     router.push("/")
   }
 
+  const renderNavButton = (item: typeof navItems[number]) => {
+    const Icon = item.icon
+    const isActive = item.id === activePage
+
+    return (
+      <button
+        key={item.id}
+        onClick={() => handleNav(item.id)}
+        className={`relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-sm font-semibold font-sans transition-colors duration-200 ${
+          isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+        }`}
+      >
+        {isActive ? (
+          <motion.span
+            layoutId="sidebar-active-pill"
+            className="absolute inset-0 rounded-xl border border-primary/20 bg-primary/12 shadow-[0_12px_30px_-22px_oklch(0.78_0.16_182_/_0.9)]"
+            transition={{ type: "spring", stiffness: 360, damping: 32, mass: 0.8 }}
+          />
+        ) : null}
+        <span className="absolute inset-0 rounded-xl transition-colors duration-200 hover:bg-accent/40" />
+        <span className="relative z-10 flex items-center gap-3">
+          <Icon className={`size-4 shrink-0 transition-colors duration-200 ${isActive ? "text-primary" : ""}`} />
+          <span>{item.label}</span>
+        </span>
+      </button>
+    )
+  }
+
   return (
     <div className="flex min-h-screen bg-background text-foreground relative">
       {/* Atmospheric bg */}
@@ -88,24 +116,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         {/* Nav */}
         <nav className="flex-1 p-3 flex flex-col gap-1">
-          {navItems.map((item) => {
-            const Icon = item.icon
-            const isActive = item.id === activePage
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleNav(item.id)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 w-full text-left font-sans ${
-                  isActive
-                    ? "text-foreground bg-primary/10"
-                    : "text-muted-foreground hover:text-foreground hover:bg-accent/40"
-                }`}
-              >
-                <Icon className="size-4 shrink-0" />
-                {item.label}
-              </button>
-            )
-          })}
+          {navItems.map(renderNavButton)}
         </nav>
 
         {/* User */}
@@ -147,22 +158,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </button>
             </div>
             <nav className="flex-1 p-3 flex flex-col gap-1">
-              {navItems.map((item) => {
-                const Icon = item.icon
-                const isActive = item.id === activePage
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => handleNav(item.id)}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 w-full text-left font-sans ${
-                      isActive ? "text-foreground bg-primary/10" : "text-muted-foreground hover:text-foreground hover:bg-accent/40"
-                    }`}
-                  >
-                    <Icon className="size-4 shrink-0" />
-                    {item.label}
-                  </button>
-                )
-              })}
+              {navItems.map(renderNavButton)}
             </nav>
             <div className="p-4 border-t border-border/40">
               <div className="flex items-center gap-3 mb-3">

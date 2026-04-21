@@ -1,16 +1,16 @@
-import { ThemeProvider } from '@/components/theme-provider'
-import { Toaster } from '@/components/ui/toaster'
-import { AuthProvider } from '@/hooks/use-auth'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import { ThemeProvider } from '@/components/theme-provider'
+import { AuthProvider } from '@/hooks/use-auth'
+import { Toaster } from '@/components/ui/toaster'
 
 const geistSans = Geist({ subsets: ["latin"] });
 const geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: 'Autocation',
-  description: 'AI-powered car contract savings analysis platform',
+  description: 'AI-powered car contract savings analysis pl',
 }
 
 export default function RootLayout({

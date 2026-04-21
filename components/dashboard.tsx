@@ -233,14 +233,22 @@ function Sidebar({ activePage, onNav }: {
             <button
               key={item.id}
               onClick={() => onNav(item.id)}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 w-full text-left font-sans ${
-                isActive
-                  ? "text-foreground bg-primary/10"
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent/40"
+              className={`relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-sm font-semibold font-sans transition-colors duration-200 ${
+                isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              <Icon className="size-4 shrink-0" />
-              {item.label}
+              {isActive ? (
+                <motion.span
+                  layoutId="dashboard-sidebar-active-pill"
+                  className="absolute inset-0 rounded-xl border border-primary/20 bg-primary/12 shadow-[0_12px_30px_-22px_oklch(0.78_0.16_182_/_0.9)]"
+                  transition={{ type: "spring", stiffness: 360, damping: 32, mass: 0.8 }}
+                />
+              ) : null}
+              <span className="absolute inset-0 rounded-xl transition-colors duration-200 hover:bg-accent/40" />
+              <span className="relative z-10 flex items-center gap-3">
+                <Icon className={`size-4 shrink-0 transition-colors duration-200 ${isActive ? "text-primary" : ""}`} />
+                <span>{item.label}</span>
+              </span>
             </button>
           )
         })}

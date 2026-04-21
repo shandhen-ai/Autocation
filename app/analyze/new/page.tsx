@@ -47,8 +47,6 @@ export default function AnalyzeNewPage() {
     if (!isAuthenticated) router.replace("/")
   }, [isAuthenticated, router])
 
-  if (!isAuthenticated) return null
-
   const addFile = useCallback((name: string, docType: string | null) => {
     const detected = docType !== null
     setUploadedFiles(prev => {
@@ -76,6 +74,8 @@ export default function AnalyzeNewPage() {
     // reset so same file can be re-selected
     e.target.value = ""
   }, [addFile])
+
+  if (!isAuthenticated) return null
 
   return (
     <AppShell>
