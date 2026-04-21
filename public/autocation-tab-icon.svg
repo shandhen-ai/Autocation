@@ -1,0 +1,17 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tabGold" x1="14" y1="8" x2="52" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF2B5"/>
+      <stop offset="0.35" stop-color="#F2C94C"/>
+      <stop offset="0.72" stop-color="#D08A00"/>
+      <stop offset="1" stop-color="#FFE18A"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0D1017"/>
+  <path d="M27.5 11L40.5 14L32.5 19L19 16L27.5 11Z" fill="url(#tabGold)"/>
+  <path d="M23 20H34L32.8 24H21.8L23 20Z" fill="url(#tabGold)"/>
+  <path d="M38.5 15.5V22.5C38.5 25 39.6 27.2 41.6 28.8" stroke="url(#tabGold)" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M12 40C19 30.5 28.5 26 41 28.5C48 29.9 53.5 33 57 38.5" stroke="url(#tabGold)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M16 41H24" stroke="url(#tabGold)" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M37 41H51" stroke="url(#tabGold)" stroke-width="3.2" stroke-linecap="round"/>
+</svg>

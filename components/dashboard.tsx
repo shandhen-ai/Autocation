@@ -3,20 +3,22 @@
 import React, { useState, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
-  MapPin, ArrowRight, PlusCircle, FileText, Settings, HelpCircle, Bell,
+  ArrowRight, PlusCircle, FileText, Settings, HelpCircle, Bell,
   ChevronRight, TrendingUp, DollarSign, Shield, Truck,
   Check, BarChart2, LayoutDashboard,
 } from "lucide-react"
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Rectangle,
   ResponsiveContainer,
 } from "recharts"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/use-auth"
+import { AutocationLogo } from "@/components/autocation-logo"
 import {
   getTotalSavings, getSavingsByCategory, getRecentReports,
 } from "@/lib/mock-data"
 import { DEMO_USER } from "@/lib/mock-data/users"
+import { ChatWidget } from "@/components/chat-widget"
 
 // ─── Design tokens (preserved from original) ───────────────────────
 
@@ -54,6 +56,26 @@ function GlowOrb({ className }: { className?: string }) {
   return <div className={`absolute rounded-full blur-3xl pointer-events-none ${className}`} />
 }
 
+function RoundedChartCursor(props: { x?: number; y?: number; width?: number; height?: number }) {
+  const x = (props.x ?? 0) + 6
+  const y = (props.y ?? 0) + 2
+  const width = Math.max((props.width ?? 0) - 12, 0)
+  const height = Math.max((props.height ?? 0) - 4, 0)
+
+  return (
+    <Rectangle
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      radius={[18, 18, 0, 0]}
+      fill="oklch(0.98 0.003 260 / 0.07)"
+      stroke="oklch(0.98 0.003 260 / 0.12)"
+      strokeWidth={1}
+    />
+  )
+}
+
 function SavingsBarChart({ data }: { data: typeof savingsByCategory }) {
   const chartData = data.map(d => ({ name: d.category, amount: d.amount }))
   return (
@@ -73,10 +95,11 @@ function SavingsBarChart({ data }: { data: typeof savingsByCategory }) {
           tickFormatter={(v: number) => `$${v.toLocaleString()}`}
         />
         <Tooltip
+          cursor={<RoundedChartCursor />}
           content={({ active, payload, label }) => {
             if (!active || !payload?.length) return null
             return (
-              <div className="rounded-xl surface-elevated p-3 text-xs backdrop-blur-md shadow-lg">
+              <div className="rounded-xl border border-white/10 surface-elevated p-3 text-xs backdrop-blur-md shadow-lg shadow-black/25">
                 <p className="text-muted-foreground mb-1 font-semibold text-[11px] uppercase tracking-wider font-sans">{label}</p>
                 <p className="font-mono font-bold text-foreground text-sm">
                   ${payload[0].value?.toLocaleString()}
@@ -215,13 +238,8 @@ function Sidebar({ activePage, onNav }: {
   return (
     <aside className="w-60 min-h-screen surface-card border-r border-border/60 flex flex-col shrink-0">
       {/* Logo */}
-      <div className="p-5 border-b border-border/40">
-        <div className="flex items-center gap-2.5">
-          <div className="size-8 rounded-xl bg-primary/12 flex items-center justify-center glow-teal-sm">
-            <MapPin className="size-4 text-primary" />
-          </div>
-          <span className="text-base font-extrabold tracking-tight text-foreground font-display">Autocation</span>
-        </div>
+      <div className="flex justify-center p-5 border-b border-border/40">
+        <AutocationLogo className="w-[172px]" />
       </div>
 
       {/* Nav */}
@@ -362,18 +380,17 @@ export default function AutolocationDashboard() {
         </div>
       )}
 
+      <ChatWidget />
+
       {/* Main content */}
       <main className="flex-1 relative z-10 min-w-0">
         {/* Mobile header */}
-        <header className="md:hidden border-b border-border/60 bg-card/60 backdrop-blur-xl sticky top-0 z-30 px-4 h-14 flex items-center gap-3">
+        <header className="md:hidden relative border-b border-border/60 bg-card/60 backdrop-blur-xl sticky top-0 z-30 px-4 h-14 flex items-center">
           <button onClick={() => setMobileSidebarOpen(true)} className="p-2 rounded-lg hover:bg-accent/50">
             <BarChart2 className="size-5 text-muted-foreground" />
           </button>
-          <div className="flex items-center gap-2">
-            <div className="size-7 rounded-lg bg-primary/12 flex items-center justify-center">
-              <MapPin className="size-3.5 text-primary" />
-            </div>
-            <span className="text-sm font-extrabold text-foreground">Autocation</span>
+          <div className="pointer-events-none absolute left-1/2 -translate-x-1/2">
+            <AutocationLogo className="w-[132px]" />
           </div>
         </header>
 

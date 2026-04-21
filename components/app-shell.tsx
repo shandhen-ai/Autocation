@@ -4,11 +4,13 @@ import React, { useState, useCallback } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 import {
-  MapPin, LayoutDashboard, PlusCircle, FileText, Settings, HelpCircle,
+  LayoutDashboard, PlusCircle, FileText, Settings, HelpCircle,
   BarChart2,
 } from "lucide-react"
+import { AutocationLogo } from "@/components/autocation-logo"
 import { useAuth } from "@/hooks/use-auth"
 import { DEMO_USER } from "@/lib/mock-data/users"
+import { ChatWidget } from "@/components/chat-widget"
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const
 
@@ -105,13 +107,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Sidebar */}
       <aside className="hidden md:flex w-60 min-h-screen surface-card border-r border-border/60 flex-col shrink-0 relative z-10">
         {/* Logo */}
-        <div className="p-5 border-b border-border/40">
-          <div className="flex items-center gap-2.5">
-            <div className="size-8 rounded-xl bg-primary/12 flex items-center justify-center glow-teal-sm">
-              <MapPin className="size-4 text-primary" />
-            </div>
-            <span className="text-base font-extrabold tracking-tight text-foreground font-display">Autocation</span>
-          </div>
+        <div className="flex justify-center p-5 border-b border-border/40">
+          <AutocationLogo className="w-[172px]" />
         </div>
 
         {/* Nav */}
@@ -147,11 +144,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="absolute inset-0 bg-black/60" onClick={() => setMobileSidebarOpen(false)} />
           <aside className="relative z-10 w-60 min-h-screen surface-card border-r border-border/60 flex flex-col shrink-0">
             <div className="p-5 border-b border-border/40 flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="size-8 rounded-xl bg-primary/12 flex items-center justify-center glow-teal-sm">
-                  <MapPin className="size-4 text-primary" />
-                </div>
-                <span className="text-base font-extrabold tracking-tight text-foreground font-display">Autocation</span>
+              <div className="flex-1 flex justify-center">
+                <AutocationLogo className="w-[152px]" />
               </div>
               <button onClick={() => setMobileSidebarOpen(false)} className="text-muted-foreground hover:text-foreground">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12 4L4 12M4 4l8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
@@ -179,20 +173,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Main content */}
       <main className="flex-1 relative z-10 min-w-0 flex flex-col">
         {/* Mobile header */}
-        <header className="md:hidden border-b border-border/60 bg-card/60 backdrop-blur-xl sticky top-0 z-30 px-4 h-14 flex items-center gap-3">
+        <header className="md:hidden relative border-b border-border/60 bg-card/60 backdrop-blur-xl sticky top-0 z-30 px-4 h-14 flex items-center">
           <button onClick={() => setMobileSidebarOpen(true)} className="p-2 rounded-lg hover:bg-accent/50">
             <BarChart2 className="size-5 text-muted-foreground" />
           </button>
-          <div className="flex items-center gap-2">
-            <div className="size-7 rounded-lg bg-primary/12 flex items-center justify-center">
-              <MapPin className="size-3.5 text-primary" />
-            </div>
-            <span className="text-sm font-extrabold text-foreground">Autocation</span>
+          <div className="pointer-events-none absolute left-1/2 -translate-x-1/2">
+            <AutocationLogo className="w-[132px]" />
           </div>
         </header>
 
         {children}
       </main>
+      <ChatWidget />
     </div>
   )
 }

@@ -8,6 +8,7 @@ import {
   ArrowRight, X, AlertCircle, ChevronRight,
 } from "lucide-react"
 import { AppShell } from "@/components/app-shell"
+import { PageHeader } from "@/components/page-header"
 import { useAuth } from "@/hooks/use-auth"
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const
@@ -33,6 +34,8 @@ const SAMPLE_FILES = [
   { name: "sample_tradein_toyota_camry.pdf", label: "Use sample trade-in offer", docType: "tradein" },
   { name: "sample_insurance_quote.pdf", label: "Use sample insurance quote", docType: "insurance" },
 ]
+
+const ANALYSIS_STEPS = ["Upload", "Analyzing", "Results"] as const
 
 export default function AnalyzeNewPage() {
   const router = useRouter()
@@ -80,33 +83,50 @@ export default function AnalyzeNewPage() {
   return (
     <AppShell>
       <div className="flex-1 flex flex-col">
-        {/* Page header */}
-        <div className="border-b border-border/60 bg-card/40 backdrop-blur-xl px-6 lg:px-10 py-5">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground font-sans mb-2">
-            <span>New Vehicle Analysis</span>
-            <ChevronRight className="size-3" />
-            <span className="text-foreground font-semibold">Upload Documents</span>
-          </div>
-          <div className="flex items-center gap-3">
-            {[0, 1, 2].map((step) => (
-              <React.Fragment key={step}>
-                <div className="flex items-center gap-2">
-                  <div className={`size-7 rounded-full flex items-center justify-center text-xs font-bold ${
-                    step === 0 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-                  }`}>
+        <PageHeader
+          contentClassName="gap-0"
+          className="py-4"
+        >
+          <div className="grid w-full gap-4 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
+            <div className="text-xs text-muted-foreground font-sans lg:justify-self-start">
+              <div className="flex flex-wrap items-center gap-2">
+                <span>New Vehicle Analysis</span>
+                <ChevronRight className="size-3" />
+                <span className="font-semibold text-foreground">Upload Documents</span>
+              </div>
+            </div>
+
+            <div className="grid w-full max-w-[48rem] grid-cols-3 justify-self-center">
+              {ANALYSIS_STEPS.map((label, step) => (
+                <div key={label} className="relative flex flex-col items-center gap-3 px-5 text-center">
+                  {step > 0 ? (
+                    <div className="absolute right-1/2 top-6 h-px w-full bg-gradient-to-r from-white/20 via-white/12 to-white/20" />
+                  ) : null}
+
+                  <div className={`relative z-10 flex size-12 shrink-0 items-center justify-center rounded-[1.1rem] border text-sm font-semibold backdrop-blur-sm transition-all duration-300 ${
+                    step === 0
+                      ? "bg-primary text-primary-foreground"
+                      : "border-border/60 bg-card text-muted-foreground shadow-[inset_0_1px_0_oklch(0.95_0.005_80_/_0.03)]"
+                  }`}
+                  style={step === 0 ? {
+                    borderColor: "oklch(0.78 0.16 182 / 0.42)",
+                    boxShadow: "0 0 0 1px oklch(0.78 0.16 182 / 0.12), 0 14px 32px -18px oklch(0.78 0.16 182 / 0.95)",
+                  } : undefined}>
                     {step + 1}
                   </div>
-                  <span className={`text-xs font-semibold hidden sm:block ${
-                    step === 0 ? "text-foreground" : "text-muted-foreground"
-                  } font-sans`}>
-                    {["Upload", "Analyzing", "Results"][step]}
+
+                  <span className={`text-sm font-semibold font-sans whitespace-nowrap tracking-[-0.01em] transition-colors ${
+                    step === 0 ? "text-foreground" : "text-muted-foreground/70"
+                  }`}>
+                    {label}
                   </span>
                 </div>
-                {step < 2 && <div className={`flex-1 h-px max-w-16 ${step === 0 ? "bg-border" : "bg-muted"}`} />}
-              </React.Fragment>
-            ))}
+              ))}
+            </div>
+
+            <div className="hidden lg:block" />
           </div>
-        </div>
+        </PageHeader>
 
         <div className="flex-1 p-6 lg:p-10">
           <div className="max-w-2xl mx-auto">

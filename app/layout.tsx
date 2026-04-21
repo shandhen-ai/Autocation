@@ -1,16 +1,28 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Google_Sans, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { AuthProvider } from '@/hooks/use-auth'
 import { Toaster } from '@/components/ui/toaster'
 
-const geistSans = Geist({ subsets: ["latin"] });
-const geistMono = Geist_Mono({ subsets: ["latin"] });
+const googleSans = Google_Sans({
+  subsets: ["latin"],
+  variable: "--font-google-sans",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+});
 
 export const metadata: Metadata = {
   title: 'Autocation',
-  description: 'AI-powered car contract savings analysis pl',
+  description: 'AI-powered car contract savings analysis platform.',
+  icons: {
+    icon: '/autocation-tab-icon.svg',
+    shortcut: '/autocation-tab-icon.svg',
+    apple: '/autocation-tab-icon.svg',
+  },
 }
 
 export default function RootLayout({
@@ -20,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.className} ${geistMono.className} antialiased`}>
+      <body className={`${googleSans.variable} ${geistMono.variable} font-sans antialiased`}>
         <ThemeProvider>
           <AuthProvider>
             {children}

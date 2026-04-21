@@ -8,6 +8,7 @@ import {
   Shield, FileText, ArrowRight,
 } from "lucide-react"
 import { AppShell } from "@/components/app-shell"
+import { PageHeader } from "@/components/page-header"
 import { useAuth } from "@/hooks/use-auth"
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const
@@ -49,15 +50,17 @@ export default function HelpPage() {
   return (
     <AppShell>
       <div className="flex-1 flex flex-col">
-        {/* Page header */}
-        <div className="border-b border-border/60 bg-card/40 backdrop-blur-xl px-6 lg:px-10 py-5">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground font-sans mb-1">
-            <span>Support</span>
+        <PageHeader className="py-4">
+          <div className="grid w-full gap-4 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
+            <div className="text-xs text-muted-foreground font-sans lg:justify-self-start">
+              Support
+            </div>
+            <h1 className="text-xl font-bold tracking-tight text-foreground font-display justify-self-center">
+              Help & FAQ
+            </h1>
+            <div className="hidden lg:block" />
           </div>
-          <h1 className="text-xl font-bold text-foreground font-display tracking-tight">
-            Help & FAQ
-          </h1>
-        </div>
+        </PageHeader>
 
         <div className="flex-1 p-6 lg:p-10">
           <div className="max-w-2xl mx-auto space-y-6">
