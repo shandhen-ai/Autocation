@@ -2,10 +2,10 @@
 
 import React, { useState, useCallback } from "react"
 import { useRouter, usePathname } from "next/navigation"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import {
   LayoutDashboard, PlusCircle, FileText, Settings, HelpCircle,
-  BarChart2,
+  BarChart2, ChevronLeft, ChevronRight,
 } from "lucide-react"
 import { AutocationLogo } from "@/components/autocation-logo"
 import { useAuth } from "@/hooks/use-auth"
@@ -19,6 +19,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const { email, logout } = useAuth()
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   const greetingName = DEMO_USER.name
 
@@ -70,21 +71,35 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <button
         key={item.id}
         onClick={() => handleNav(item.id)}
-        className={`relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-sm font-semibold font-sans transition-colors duration-200 ${
+        className={`relative flex w-full items-center overflow-hidden rounded-xl py-2.5 text-left text-sm font-semibold font-sans transition-colors duration-200 ${
+          sidebarCollapsed ? "justify-center px-0" : "gap-3 px-3"
+        } ${
           isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
         }`}
       >
         {isActive ? (
           <motion.span
             layoutId="sidebar-active-pill"
-            className="absolute inset-0 rounded-xl border border-primary/20 bg-primary/12 shadow-[0_12px_30px_-22px_oklch(0.78_0.16_182_/_0.9)]"
+            className="absolute inset-0 rounded-xl border border-primary/20 bg-primary/12 shadow-[0_12px_30px_-22px_oklch(0.72_0.15_82_/_0.9)]"
             transition={{ type: "spring", stiffness: 360, damping: 32, mass: 0.8 }}
+            style={{ right: 'auto' }}
           />
         ) : null}
         <span className="absolute inset-0 rounded-xl transition-colors duration-200 hover:bg-accent/40" />
-        <span className="relative z-10 flex items-center gap-3">
+        <span className={`relative z-10 flex items-center ${sidebarCollapsed ? "justify-center" : ""}`}>
           <Icon className={`size-4 shrink-0 transition-colors duration-200 ${isActive ? "text-primary" : ""}`} />
-          <span>{item.label}</span>
+          <motion.span
+            initial={false}
+            animate={{
+              maxWidth: sidebarCollapsed ? 0 : 148,
+              opacity: sidebarCollapsed ? 0 : 1,
+              marginLeft: sidebarCollapsed ? 0 : 12,
+            }}
+            transition={{ duration: 0.22, ease: EASE_OUT }}
+            className="block overflow-hidden whitespace-nowrap"
+          >
+            {item.label}
+          </motion.span>
         </span>
       </button>
     )
@@ -96,7 +111,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="fixed inset-0 pointer-events-none z-0">
         <div
           className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full opacity-[0.03] blur-[120px] animate-float"
-          style={{ background: "oklch(0.78 0.16 182)" }}
+          style={{ background: "oklch(0.72 0.15 82)" }}
         />
         <div
           className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full opacity-[0.02] blur-[100px] animate-float"
@@ -105,37 +120,110 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Sidebar */}
-      <aside className="hidden md:flex w-60 min-h-screen surface-card border-r border-border/60 flex-col shrink-0 relative z-10">
-        {/* Logo */}
-        <div className="flex justify-center p-5 border-b border-border/40">
-          <AutocationLogo className="w-[172px]" />
-        </div>
-
-        {/* Nav */}
-        <nav className="flex-1 p-3 flex flex-col gap-1">
-          {navItems.map(renderNavButton)}
-        </nav>
-
-        {/* User */}
-        <div className="p-4 border-t border-border/40">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="size-9 rounded-xl bg-primary/12 flex items-center justify-center shrink-0 glow-teal-sm">
-              <span className="text-xs font-bold text-primary font-display">
-                {greetingName.slice(0, 2).toUpperCase()}
-              </span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-foreground font-sans truncate">{greetingName}</p>
-              <p className="text-[10px] text-muted-foreground font-sans truncate">{email}</p>
-            </div>
-          </div>
-          <button
-            onClick={handleLogout}
-            className="w-full text-left text-xs text-muted-foreground hover:text-foreground transition-colors font-sans px-2"
+      <aside className="hidden md:flex min-h-screen shrink-0 relative z-20 overflow-visible">
+        <AnimatePresence initial={false}>
+          <motion.div
+            initial={false}
+            animate={{ width: sidebarCollapsed ? 90 : 258 }}
+            transition={{ type: "spring", stiffness: 360, damping: 32, mass: 0.8 }}
+            className="relative h-screen max-h-screen overflow-visible pr-[18px]"
           >
-            Sign out
-          </button>
-        </div>
+            {/* Collapse toggle */}
+            <button
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              className="absolute right-0 top-1/2 z-30 flex size-9 -translate-y-1/2 items-center justify-center rounded-full border border-primary/25 bg-primary text-primary-foreground shadow-[0_14px_34px_-18px_oklch(0.72_0.15_82_/_0.95)] transition-colors hover:bg-primary/80"
+            >
+              {sidebarCollapsed ? (
+                <ChevronRight className="size-4 text-primary-foreground" />
+              ) : (
+                <ChevronLeft className="size-4 text-primary-foreground" />
+              )}
+            </button>
+
+            <div className="flex h-full flex-col overflow-hidden surface-card border-r border-border/60">
+              {/* Logo */}
+              <div className="flex h-24 items-center justify-center border-b border-border/40 px-5">
+                <AnimatePresence mode="wait" initial={false}>
+                  {!sidebarCollapsed && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <AutocationLogo className="w-[172px]" />
+                    </motion.div>
+                  )}
+                  {sidebarCollapsed && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <AutocationLogo className="w-[48px]" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Nav */}
+              <nav className="flex-1 p-3 flex flex-col gap-1 overflow-hidden">
+                {navItems.map(renderNavButton)}
+              </nav>
+
+              {/* User */}
+              <div className="h-24 border-t border-border/40 px-4">
+                <AnimatePresence mode="wait" initial={false}>
+                  {!sidebarCollapsed ? (
+                    <motion.div
+                      key="user-expanded"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                      className="flex h-full flex-col justify-center"
+                    >
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="size-9 rounded-xl bg-primary/12 flex items-center justify-center shrink-0 glow-gold-sm">
+                          <span className="text-xs font-bold text-primary font-display">
+                            {greetingName.slice(0, 2).toUpperCase()}
+                          </span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold text-foreground font-sans truncate">{greetingName}</p>
+                          <p className="text-[10px] text-muted-foreground font-sans truncate">{email}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left text-xs text-muted-foreground hover:text-foreground transition-colors font-sans px-2"
+                      >
+                        Sign out
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="user-collapsed"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                      className="flex h-full items-center justify-center"
+                    >
+                      <div className="size-9 rounded-xl bg-primary/12 flex items-center justify-center shrink-0 glow-gold-sm cursor-pointer" onClick={handleLogout}>
+                        <span className="text-xs font-bold text-primary font-display">
+                          {greetingName.slice(0, 2).toUpperCase()}
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </aside>
 
       {/* Mobile sidebar overlay */}

@@ -1,0 +1,47 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - img "Autocation" [ref=e7]
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - heading "Welcome Back" [level=1] [ref=e14]
+          - paragraph [ref=e15]: Sign in to access your dashboard
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - text: Email
+            - generic [ref=e18]:
+              - img [ref=e19]
+              - textbox "you@example.com" [ref=e22]
+          - generic [ref=e23]:
+            - generic [ref=e24]:
+              - generic [ref=e25]: Password
+              - button "Forgot?" [ref=e26] [cursor=pointer]
+            - generic [ref=e27]:
+              - img [ref=e28]
+              - textbox "Enter your password" [ref=e31]
+              - button [ref=e32] [cursor=pointer]:
+                - img [ref=e33]
+          - button "Sign In" [ref=e36] [cursor=pointer]
+        - paragraph [ref=e37]:
+          - text: Don't have an account?
+          - button "Create one" [ref=e38] [cursor=pointer]
+      - paragraph [ref=e39]: By continuing, you agree to our Terms of Service and Privacy Policy
+    - generic [ref=e40]:
+      - generic [ref=e41]:
+        - img "Luxury sports car in elegant showroom" [ref=e44]
+        - img "Modern dealership with premium vehicles" [ref=e46]
+        - img "Elegant automotive retail space" [ref=e48]
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - generic [ref=e54]: Premium Inventory
+          - heading "Access dealer pricing data" [level=2] [ref=e56]
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - button [ref=e59] [cursor=pointer]
+            - button [ref=e60] [cursor=pointer]
+            - button [ref=e61] [cursor=pointer]
+            - button [ref=e62] [cursor=pointer]
+          - generic [ref=e63]: 1 / 4
+      - img "Autocation" [ref=e65]
+  - region "Notifications (F8)":
+    - list

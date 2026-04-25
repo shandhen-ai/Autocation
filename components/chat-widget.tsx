@@ -133,22 +133,22 @@ export function ChatWidget() {
             animate={{ scale: 1.3, opacity: 0 }}
             transition={{ repeat: Infinity, duration: 1.5, ease: EASE_OUT }}
             className="absolute inset-0 rounded-full"
-            style={{ background: "oklch(0.78 0.16 182 / 0.3)" }}
+            style={{ background: "oklch(0.72 0.15 82 / 0.3)" }}
           />
         )}
 
         {/* Main button */}
         <div
-          className="relative flex h-14 w-14 items-center justify-center rounded-full shadow-[0_0_0_1px_oklch(0.78_0.16_182_/_0.15),0_6px_18px_-10px_oklch(0.78_0.16_182_/_0.75)] transition-shadow hover:shadow-[0_0_0_1px_oklch(0.78_0.16_182_/_0.25),0_8px_24px_-10px_oklch(0.78_0.16_182_/_0.85)]"
-          style={{ background: "oklch(0.78 0.16 182)" }}
+          className="relative flex h-14 w-14 items-center justify-center rounded-full shadow-[0_0_0_1px_oklch(0.72_0.15_82_/_0.15),0_6px_18px_-10px_oklch(0.72_0.15_82_/_0.75)] transition-shadow hover:shadow-[0_0_0_1px_oklch(0.72_0.15_82_/_0.25),0_8px_24px_-10px_oklch(0.72_0.15_82_/_0.85)]"
+          style={{ background: "oklch(0.72 0.15 82)" }}
         >
           {/* Section number badge */}
           <div
             className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold"
             style={{
               background: "oklch(0.11 0.008 260)",
-              color: "oklch(0.78 0.16 182)",
-              boxShadow: "0 0 8px oklch(0.78 0.16 182 / 0.5)",
+              color: "oklch(0.72 0.15 82)",
+              boxShadow: "0 0 8px oklch(0.72 0.15 82 / 0.5)",
             }}
           >
             1
@@ -179,9 +179,9 @@ export function ChatWidget() {
               <div className="flex items-center gap-2">
                 <div
                   className="flex h-8 w-8 items-center justify-center rounded-lg"
-                  style={{ background: "oklch(0.78 0.16 182 / 0.15)" }}
+                  style={{ background: "oklch(0.72 0.15 82 / 0.15)" }}
                 >
-                  <Bot className="h-4 w-4" style={{ color: "oklch(0.78 0.16 182)" }} />
+                  <Bot className="h-4 w-4" style={{ color: "oklch(0.72 0.15 82)" }} />
                 </div>
                 <span className="font-medium" style={{ color: "oklch(0.95 0.005 80)" }}>
                   Chat Assistant
@@ -213,12 +213,12 @@ export function ChatWidget() {
                       style={{
                         background:
                           message.role === "user"
-                            ? "oklch(0.78 0.16 182 / 0.15)"
+                            ? "oklch(0.72 0.15 82 / 0.15)"
                             : "oklch(0.28 0.01 260)",
                       }}
                     >
                       {message.role === "user" ? (
-                        <User className="h-3.5 w-3.5" style={{ color: "oklch(0.78 0.16 182)" }} />
+                        <User className="h-3.5 w-3.5" style={{ color: "oklch(0.72 0.15 82)" }} />
                       ) : (
                         <Bot className="h-3.5 w-3.5" style={{ color: "oklch(0.95 0.005 80 / 0.6)" }} />
                       )}
@@ -234,7 +234,7 @@ export function ChatWidget() {
                       style={{
                         background:
                           message.role === "user"
-                            ? "oklch(0.78 0.16 182)"
+                            ? "oklch(0.72 0.15 82)"
                             : "oklch(0.20 0.01 260)",
                         color: message.role === "user"
                           ? "oklch(0.11 0.008 260)"
@@ -259,9 +259,9 @@ export function ChatWidget() {
                       className="flex gap-1 rounded-xl rounded-bl-sm px-3 py-2"
                       style={{ background: "oklch(0.20 0.01 260)" }}
                     >
-                      <span className="h-2 w-2 animate-bounce rounded-full" style={{ background: "oklch(0.78 0.16 182)", animationDelay: "0ms" }} />
-                      <span className="h-2 w-2 animate-bounce rounded-full" style={{ background: "oklch(0.78 0.16 182)", animationDelay: "150ms" }} />
-                      <span className="h-2 w-2 animate-bounce rounded-full" style={{ background: "oklch(0.78 0.16 182)", animationDelay: "300ms" }} />
+                      <span className="h-2 w-2 animate-bounce rounded-full" style={{ background: "oklch(0.72 0.15 82)", animationDelay: "0ms" }} />
+                      <span className="h-2 w-2 animate-bounce rounded-full" style={{ background: "oklch(0.72 0.15 82)", animationDelay: "150ms" }} />
+                      <span className="h-2 w-2 animate-bounce rounded-full" style={{ background: "oklch(0.72 0.15 82)", animationDelay: "300ms" }} />
                     </div>
                   </div>
                 )}
@@ -285,14 +285,14 @@ export function ChatWidget() {
                   background: "oklch(0.20 0.01 260)",
                   borderColor: "oklch(0.28 0.01 260)",
                   color: "oklch(0.95 0.005 80)",
-                  ["--tw-ring-color" as string]: "oklch(0.78 0.16 182 / 0.3)",
+                  ["--tw-ring-color" as string]: "oklch(0.72 0.15 82 / 0.3)",
                 }}
               />
               <button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
                 className="flex h-10 w-10 items-center justify-center rounded-xl transition-all disabled:opacity-40"
-                style={{ background: "oklch(0.78 0.16 182)" }}
+                style={{ background: "oklch(0.72 0.15 82)" }}
                 aria-label="Send message"
               >
                 <Send className="h-4 w-4 text-black" />

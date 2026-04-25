@@ -109,8 +109,8 @@ export default function AnalyzeNewPage() {
                       : "border-border/60 bg-card text-muted-foreground shadow-[inset_0_1px_0_oklch(0.95_0.005_80_/_0.03)]"
                   }`}
                   style={step === 0 ? {
-                    borderColor: "oklch(0.78 0.16 182 / 0.42)",
-                    boxShadow: "0 0 0 1px oklch(0.78 0.16 182 / 0.12), 0 14px 32px -18px oklch(0.78 0.16 182 / 0.95)",
+                    borderColor: "oklch(0.72 0.15 82 / 0.42)",
+                    boxShadow: "0 0 0 1px oklch(0.72 0.15 82 / 0.12), 0 14px 32px -18px oklch(0.72 0.15 82 / 0.95)",
                   } : undefined}>
                     {step + 1}
                   </div>

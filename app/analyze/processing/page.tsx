@@ -85,31 +85,33 @@ function ProcessingContent() {
       return
     }
 
-    let stageIndex = 0
-    const interval = setInterval(() => {
+    let stageTimeout: ReturnType<typeof setTimeout> | undefined
+    let redirectTimeout: ReturnType<typeof setTimeout> | undefined
+
+    const runStage = (stageIndex: number) => {
       const stage = STAGES[stageIndex]
+
+      if (!stage) {
+        redirectTimeout = setTimeout(() => {
+          router.replace("/analyze/output")
+        }, 500)
+        return
+      }
+
       setCurrentStage(stageIndex)
 
-      // Add chips for this stage
       if (STAGE_CHIPS[stage.id]) {
         setChips(prev => [...prev, ...STAGE_CHIPS[stage.id]])
       }
 
-      // Advance after stage duration
-      setTimeout(() => {
+      stageTimeout = setTimeout(() => {
         setCompletedStages(prev => new Set([...prev, stageIndex]))
         setConfidencePct(Math.round(((stageIndex + 1) / STAGES.length) * 100))
-        stageIndex++
-
-        if (stageIndex >= STAGES.length) {
-          clearInterval(interval)
-          setTimeout(() => {
-            router.replace("/analyze/output")
-          }, 500)
-        }
+        runStage(stageIndex + 1)
       }, stage.duration)
+    }
 
-    }, 800)
+    runStage(0)
 
     // Rotate reassurance messages
     const msgInterval = setInterval(() => {
@@ -117,7 +119,8 @@ function ProcessingContent() {
     }, 3000)
 
     return () => {
-      clearInterval(interval)
+      if (stageTimeout) clearTimeout(stageTimeout)
+      if (redirectTimeout) clearTimeout(redirectTimeout)
       clearInterval(msgInterval)
     }
   }, [skip, router])
@@ -137,7 +140,7 @@ function ProcessingContent() {
             <motion.div
               className="absolute inset-0 rounded-2xl overflow-hidden"
               animate={currentStage < STAGES.length ? {
-                boxShadow: ["inset 0 0 0 2px oklch(0.78 0.16 182 / 0.1)", "inset 0 0 0 2px oklch(0.78 0.16 182 / 0.4)", "inset 0 0 0 2px oklch(0.78 0.16 182 / 0.1)"],
+                boxShadow: ["inset 0 0 0 2px oklch(0.72 0.15 82 / 0.1)", "inset 0 0 0 2px oklch(0.72 0.15 82 / 0.4)", "inset 0 0 0 2px oklch(0.72 0.15 82 / 0.1)"],
               } : {}}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
             >

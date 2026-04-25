@@ -4,7 +4,7 @@ import React, { useState, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   ArrowRight, PlusCircle, FileText, Settings, HelpCircle, Bell,
-  ChevronRight, TrendingUp, DollarSign, Shield, Truck,
+  ChevronLeft, ChevronRight, TrendingUp, DollarSign, Shield, Truck,
   Check, BarChart2, LayoutDashboard,
 } from "lucide-react"
 import {
@@ -26,14 +26,19 @@ const CARD_SHADOW =
   "rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px"
 
 const C = {
-  teal: "oklch(0.78 0.16 182)",
-  tealMuted: "oklch(0.78 0.16 182 / 0.3)",
-  azure: "oklch(0.68 0.14 245)",
-  amber: "oklch(0.76 0.14 75)",
-  rose: "oklch(0.62 0.22 18)",
-  slate: "oklch(0.50 0.02 260)",
-  gain: "oklch(0.76 0.16 162)",
-  loss: "oklch(0.62 0.22 18)",
+  /* ── Luxury Gold Palette ─────────────────────────────── */
+  gold: "oklch(0.72 0.15 82)",        /* #D4A038 — Primary Gold */
+  goldMuted: "oklch(0.72 0.15 82 / 0.3)",
+  goldBright: "oklch(0.85 0.14 82)",  /* #EBCB71 — Bright Gold */
+  goldDeep: "oklch(0.48 0.10 65)",    /* #9E7422 — Deep Bronze */
+  goldActive: "oklch(0.18 0.04 65)",  /* #2A200A — Active bg */
+  /* ── Charcoal / Silver (kept for structure) ─────────── */
+  azure: "oklch(0.62 0.01 260)",      /* Soft Silver */
+  amber: "oklch(0.48 0.10 65)",        /* Deep Bronze */
+  rose: "oklch(0.58 0.22 25)",        /* Accent Red */
+  slate: "oklch(0.40 0.01 260)",       /* Charcoal */
+  gain: "oklch(0.72 0.15 82)",        /* Gold (savings) */
+  loss: "oklch(0.58 0.22 25)",        /* Accent Red */
   grid: "oklch(0.24 0.01 260)",
   tick: "oklch(0.50 0.015 260)",
   surface: "oklch(0.175 0.01 260)",
@@ -215,9 +220,18 @@ function ActivityFeed() {
 
 // ─── Sidebar ─────────────────────────────────────────────────────
 
-function Sidebar({ activePage, onNav }: {
+function Sidebar({
+  activePage,
+  onNav,
+  collapsed = false,
+  onToggleCollapse,
+  showCollapseToggle = false,
+}: {
   activePage: string
   onNav: (page: string) => void
+  collapsed?: boolean
+  onToggleCollapse?: () => void
+  showCollapseToggle?: boolean
 }) {
   const { email, logout } = useAuth()
   const router = useRouter()
@@ -236,63 +250,150 @@ function Sidebar({ activePage, onNav }: {
   }
 
   return (
-    <aside className="w-60 min-h-screen surface-card border-r border-border/60 flex flex-col shrink-0">
-      {/* Logo */}
-      <div className="flex justify-center p-5 border-b border-border/40">
-        <AutocationLogo className="w-[172px]" />
-      </div>
-
-      {/* Nav */}
-      <nav className="flex-1 p-3 flex flex-col gap-1">
-        {navItems.map((item) => {
-          const Icon = item.icon
-          const isActive = item.id === activePage
-          return (
-            <button
-              key={item.id}
-              onClick={() => onNav(item.id)}
-              className={`relative flex w-full items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-left text-sm font-semibold font-sans transition-colors duration-200 ${
-                isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {isActive ? (
-                <motion.span
-                  layoutId="dashboard-sidebar-active-pill"
-                  className="absolute inset-0 rounded-xl border border-primary/20 bg-primary/12 shadow-[0_12px_30px_-22px_oklch(0.78_0.16_182_/_0.9)]"
-                  transition={{ type: "spring", stiffness: 360, damping: 32, mass: 0.8 }}
-                />
-              ) : null}
-              <span className="absolute inset-0 rounded-xl transition-colors duration-200 hover:bg-accent/40" />
-              <span className="relative z-10 flex items-center gap-3">
-                <Icon className={`size-4 shrink-0 transition-colors duration-200 ${isActive ? "text-primary" : ""}`} />
-                <span>{item.label}</span>
-              </span>
-            </button>
-          )
-        })}
-      </nav>
-
-      {/* User */}
-      <div className="p-4 border-t border-border/40">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="size-9 rounded-xl bg-primary/12 flex items-center justify-center shrink-0 glow-teal-sm">
-            <span className="text-xs font-bold text-primary font-display">
-              {greetingName.slice(0, 2).toUpperCase()}
-            </span>
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-foreground font-sans truncate">{greetingName}</p>
-            <p className="text-[10px] text-muted-foreground font-sans truncate">{email}</p>
-          </div>
-        </div>
+    <motion.aside
+      initial={false}
+      animate={{ width: collapsed ? 90 : 258 }}
+      transition={{ type: "spring", stiffness: 360, damping: 32, mass: 0.8 }}
+      className="relative min-h-screen shrink-0 overflow-visible pr-[18px]"
+    >
+      {showCollapseToggle ? (
         <button
-          onClick={handleLogout}
-          className="w-full text-left text-xs text-muted-foreground hover:text-foreground transition-colors font-sans px-2"
+          onClick={onToggleCollapse}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          className="absolute right-0 top-1/2 z-30 flex size-9 -translate-y-1/2 items-center justify-center rounded-full border border-primary/25 bg-primary text-primary-foreground shadow-[0_14px_34px_-18px_oklch(0.72_0.15_82_/_0.95)] transition-colors hover:bg-primary/80"
         >
-          Sign out
+          {collapsed ? (
+            <ChevronRight className="size-4 text-primary-foreground" />
+          ) : (
+            <ChevronLeft className="size-4 text-primary-foreground" />
+          )}
         </button>
+      ) : null}
+
+      <div className="flex min-h-screen flex-col overflow-hidden surface-card border-r border-border/60">
+        {/* Logo */}
+        <div className="flex h-24 items-center justify-center border-b border-border/40 px-5">
+          <AnimatePresence mode="wait" initial={false}>
+            {!collapsed ? (
+              <motion.div
+                key="dashboard-logo-expanded"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.15 }}
+              >
+                <AutocationLogo className="w-[172px]" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="dashboard-logo-collapsed"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.15 }}
+              >
+                <AutocationLogo className="w-[48px]" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Nav */}
+        <nav className="flex-1 p-3 flex flex-col gap-1 overflow-hidden">
+          {navItems.map((item) => {
+            const Icon = item.icon
+            const isActive = item.id === activePage
+            return (
+              <button
+                key={item.id}
+                onClick={() => onNav(item.id)}
+                className={`relative flex w-full items-center overflow-hidden rounded-xl py-2.5 text-left text-sm font-semibold font-sans transition-colors duration-200 ${
+                  collapsed ? "justify-center px-0" : "gap-3 px-3"
+                } ${
+                  isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {isActive ? (
+                  <motion.span
+                    layoutId="dashboard-sidebar-active-pill"
+                    className="absolute inset-0 rounded-xl border border-primary/20 bg-primary/12 shadow-[0_12px_30px_-22px_oklch(0.72_0.15_82_/_0.9)]"
+                    transition={{ type: "spring", stiffness: 360, damping: 32, mass: 0.8 }}
+                  />
+                ) : null}
+                <span className="absolute inset-0 rounded-xl transition-colors duration-200 hover:bg-accent/40" />
+                <span className={`relative z-10 flex items-center ${collapsed ? "justify-center" : ""}`}>
+                  <Icon className={`size-4 shrink-0 transition-colors duration-200 ${isActive ? "text-primary" : ""}`} />
+                  <motion.span
+                    initial={false}
+                    animate={{
+                      maxWidth: collapsed ? 0 : 148,
+                      opacity: collapsed ? 0 : 1,
+                      marginLeft: collapsed ? 0 : 12,
+                    }}
+                    transition={{ duration: 0.22, ease: EASE_OUT }}
+                    className="block overflow-hidden whitespace-nowrap"
+                  >
+                    {item.label}
+                  </motion.span>
+                </span>
+              </button>
+            )
+          })}
+        </nav>
+
+        {/* User */}
+        <div className="h-24 border-t border-border/40 px-4">
+          <AnimatePresence mode="wait" initial={false}>
+            {!collapsed ? (
+              <motion.div
+                key="dashboard-user-expanded"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="flex h-full flex-col justify-center"
+              >
+                <div className="mb-3 flex items-center gap-3">
+                  <div className="size-9 rounded-xl bg-primary/12 flex items-center justify-center shrink-0 glow-gold-sm">
+                    <span className="text-xs font-bold text-primary font-display">
+                      {greetingName.slice(0, 2).toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-foreground font-sans truncate">{greetingName}</p>
+                    <p className="text-[10px] text-muted-foreground font-sans truncate">{email}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left text-xs text-muted-foreground hover:text-foreground transition-colors font-sans px-2"
+                >
+                  Sign out
+                </button>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="dashboard-user-collapsed"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="flex h-full items-center justify-center"
+              >
+                <div
+                  className="size-9 rounded-xl bg-primary/12 flex items-center justify-center shrink-0 glow-gold-sm cursor-pointer"
+                  onClick={handleLogout}
+                >
+                  <span className="text-xs font-bold text-primary font-display">
+                    {greetingName.slice(0, 2).toUpperCase()}
+                  </span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
-    </aside>
+    </motion.aside>
   )
 }
 
@@ -337,6 +438,7 @@ function StatCard({ label, value, sublabel, icon: Icon, delay = 0 }: {
 export default function AutolocationDashboard() {
   const router = useRouter()
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const activePage = "dashboard"
 
   const handleNav = useCallback((page: string) => {
@@ -361,13 +463,19 @@ export default function AutolocationDashboard() {
     <div className="flex min-h-screen bg-background text-foreground relative">
       {/* Atmospheric bg */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full opacity-[0.03] blur-[120px] animate-float" style={{ background: C.teal }} />
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full opacity-[0.03] blur-[120px] animate-float" style={{ background: C.gold }} />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full opacity-[0.02] blur-[100px] animate-float" style={{ background: C.azure, animationDelay: "3s" }} />
       </div>
 
       {/* Sidebar */}
       <div className="hidden md:block relative z-10">
-        <Sidebar activePage={activePage} onNav={handleNav} />
+        <Sidebar
+          activePage={activePage}
+          onNav={handleNav}
+          collapsed={sidebarCollapsed}
+          showCollapseToggle
+          onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+        />
       </div>
 
       {/* Mobile sidebar overlay */}

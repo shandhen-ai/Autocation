@@ -12,66 +12,69 @@
   :root {
     --font-sans: var(--font-google-sans);
     --font-mono: var(--font-geist-mono);
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* ── Dark Mode Base (unchanged) ─────────────────────────────────── */
     --background: oklch(0.11 0.008 260);
     --foreground: oklch(0.95 0.005 80);
     --card: oklch(0.175 0.01 260);
     --card-foreground: oklch(0.95 0.005 80);
     --popover: oklch(0.175 0.01 260);
     --popover-foreground: oklch(0.95 0.005 80);
-    --primary: oklch(0.78 0.16 182);
-    --primary-foreground: oklch(0.11 0.008 260);
-    --secondary: oklch(0.24 0.01 260);
-    --secondary-foreground: oklch(0.95 0.005 80);
-    --muted: oklch(0.24 0.01 260);
-    --muted-foreground: oklch(0.65 0.01 260);
-    --accent: oklch(0.24 0.01 260);
-    --accent-foreground: oklch(0.95 0.005 80);
-    --destructive: oklch(0.62 0.22 18);
-    --destructive-foreground: oklch(0.95 0.005 80);
-    --border: oklch(0.30 0.01 260);
-    --input: oklch(0.30 0.01 260);
-    --ring: oklch(0.78 0.16 182);
-    --chart-1: oklch(0.78 0.16 182);
-    --chart-2: oklch(0.68 0.14 245);
-    --chart-3: oklch(0.76 0.14 75);
-    --chart-4: oklch(0.62 0.22 18);
-    --chart-5: oklch(0.50 0.02 260);
+
+    /* ── GOLD PALETTE — replaces teal ───────────────────────────────── */
+    /* Primary Gold  #D4A038  →  oklch(0.72 0.15 82) */
+    --primary: oklch(0.72 0.15 82);
+    --primary-foreground: oklch(0.12 0.01 82);
+
+    /* Secondary / Muted (dark surfaces — unchanged) */
+    --secondary: oklch(0.22 0.01 260);
+    --secondary-foreground: oklch(0.92 0.005 80);
+    --muted: oklch(0.22 0.01 260);
+    --muted-foreground: oklch(0.60 0.01 260);
+    --accent: oklch(0.22 0.01 260);
+    --accent-foreground: oklch(0.92 0.005 80);
+
+    /* Destructive / Alerts — Accent Red #E60000 */
+    --destructive: oklch(0.58 0.22 25);
+    --destructive-foreground: oklch(0.98 0.005 80);
+
+    /* ── Borders & Inputs ─────────────────────────────────────────── */
+    --border: oklch(0.28 0.01 260);
+    --input: oklch(0.28 0.01 260);
+    --ring: oklch(0.72 0.15 82);  /* focus rings now gold */
+
+    /* ── Chart palette — luxury gold/silver/bronze ─────────────────── */
+    --chart-1: oklch(0.72 0.15 82);   /* Primary Gold  */
+    --chart-2: oklch(0.62 0.01 260);   /* Soft Silver   */
+    --chart-3: oklch(0.48 0.10 65);   /* Deep Bronze   */
+    --chart-4: oklch(0.58 0.22 25);   /* Accent Red    */
+    --chart-5: oklch(0.40 0.01 260);   /* Charcoal      */
+
     --radius: 0.75rem;
-    --fin-gain: oklch(0.76 0.16 162);
-    --fin-loss: oklch(0.62 0.22 18);
+
+    /* ── Sidebar (dark mode) ────────────────────────────────────────── */
+    --sidebar-background: oklch(0.175 0.01 260);
+    --sidebar-foreground: oklch(0.92 0.005 80);
+    --sidebar-primary: oklch(0.72 0.15 82);
+    --sidebar-primary-foreground: oklch(0.12 0.01 82);
+    --sidebar-accent: oklch(0.22 0.01 260);
+    --sidebar-accent-foreground: oklch(0.92 0.005 80);
+    --sidebar-border: oklch(0.28 0.01 260);
+    --sidebar-ring: oklch(0.72 0.15 82);
+
+    /* ── Semantic tokens ────────────────────────────────────────────── */
+    --fin-gain: oklch(0.72 0.15 82);   /* was teal — now gold */
+    --fin-loss: oklch(0.58 0.22 25);   /* accent red          */
+
+    /* ── Extended gold scale ──────────────────────────────────────── */
+    /* Bright Gold  #EBCB71 */
+    --gold-bright: oklch(0.85 0.14 82);
+    /* Deep Bronze  #9E7422 */
+    --gold-deep: oklch(0.48 0.12 65);
+    /* Very Dark Bronze / Active bg  #2A200A */
+    --gold-darkest: oklch(0.18 0.04 65);
+    /* Accent Red  #E60000 */
+    --accent-red: oklch(0.58 0.22 25);
   }
 }
 
@@ -84,6 +87,8 @@
   }
 }
 
+/* ── Surface utilities ─────────────────────────────────────────────── */
+
 .surface-card {
   background-color: oklch(0.175 0.01 260);
   border: 1px solid oklch(0.28 0.01 260);
@@ -93,16 +98,16 @@
   border: 1px solid oklch(0.28 0.01 260);
 }
 .muted-foreground {
-  color: oklch(0.65 0.01 260);
+  color: oklch(0.60 0.01 260);
 }
 .text-foreground {
   color: oklch(0.95 0.005 80);
 }
 .text-muted-foreground {
-  color: oklch(0.65 0.01 260);
+  color: oklch(0.60 0.01 260);
 }
 .text-primary-foreground {
-  color: oklch(0.11 0.008 260);
+  color: oklch(0.12 0.01 82);
 }
 .bg-background {
   background-color: oklch(0.11 0.008 260);
@@ -111,7 +116,7 @@
   background-color: oklch(0.175 0.01 260);
 }
 .bg-primary {
-  background-color: oklch(0.78 0.16 182);
+  background-color: oklch(0.72 0.15 82);
 }
 .bg-muted {
   background-color: oklch(0.22 0.01 260);
@@ -159,66 +164,89 @@
   border-color: oklch(0.28 0.01 260 / 0.5);
 }
 .text-primary {
-  color: oklch(0.78 0.16 182);
+  color: oklch(0.72 0.15 82);
 }
 .bg-primary\/8 {
-  background-color: oklch(0.78 0.16 182 / 0.08);
+  background-color: oklch(0.72 0.15 82 / 0.08);
 }
 .bg-primary\/12 {
-  background-color: oklch(0.78 0.16 182 / 0.12);
+  background-color: oklch(0.72 0.15 82 / 0.12);
 }
 .bg-primary\/18 {
-  background-color: oklch(0.78 0.16 182 / 0.18);
+  background-color: oklch(0.72 0.15 82 / 0.18);
 }
 .bg-fin-gain\/8 {
-  background-color: oklch(0.76 0.16 162 / 0.08);
+  background-color: oklch(0.72 0.15 82 / 0.08);
 }
 .bg-fin-gain\/10 {
-  background-color: oklch(0.76 0.16 162 / 0.10);
+  background-color: oklch(0.72 0.15 82 / 0.10);
 }
 .bg-fin-gain\/12 {
-  background-color: oklch(0.76 0.16 162 / 0.12);
+  background-color: oklch(0.72 0.15 82 / 0.12);
 }
 .bg-fin-loss\/5 {
-  background-color: oklch(0.62 0.22 18 / 0.05);
+  background-color: oklch(0.58 0.22 25 / 0.05);
 }
 .bg-fin-loss\/8 {
-  background-color: oklch(0.62 0.22 18 / 0.08);
+  background-color: oklch(0.58 0.22 25 / 0.08);
 }
 .bg-fin-loss\/10 {
-  background-color: oklch(0.62 0.22 18 / 0.10);
+  background-color: oklch(0.58 0.22 25 / 0.10);
 }
 .text-fin-gain {
-  color: oklch(0.76 0.16 162);
+  color: oklch(0.72 0.15 82);
 }
 .text-fin-loss {
-  color: oklch(0.62 0.22 18);
+  color: oklch(0.58 0.22 25);
 }
 .bg-chart-3\/8 {
-  background-color: oklch(0.76 0.14 75 / 0.08);
+  background-color: oklch(0.48 0.10 65 / 0.08);
 }
 .bg-chart-3\/12 {
-  background-color: oklch(0.76 0.14 75 / 0.12);
+  background-color: oklch(0.48 0.10 65 / 0.12);
 }
 .text-chart-3 {
-  color: oklch(0.76 0.14 75);
+  color: oklch(0.48 0.10 65);
 }
 .bg-chart-2\/12 {
-  background-color: oklch(0.68 0.14 245 / 0.12);
+  background-color: oklch(0.62 0.01 260 / 0.12);
 }
 .text-chart-2 {
-  color: oklch(0.68 0.14 245);
+  color: oklch(0.62 0.01 260);
 }
 .text-muted-foreground\/50 {
-  color: oklch(0.65 0.01 260 / 0.5);
+  color: oklch(0.60 0.01 260 / 0.5);
 }
 .text-muted-foreground\/70 {
-  color: oklch(0.65 0.01 260 / 0.7);
+  color: oklch(0.60 0.01 260 / 0.7);
 }
 
-.glow-teal-sm {
-  box-shadow: 0 0 12px 2px oklch(0.78 0.16 182 / 0.15);
+/* ── Gold glow effects ──────────────────────────────────────────────── */
+
+/* Small gold glow — replaces teal glow-teal-sm */
+.glow-gold-sm {
+  box-shadow: 0 0 12px 2px oklch(0.72 0.15 82 / 0.25);
 }
+
+/* Medium glow — hero accents, active sidebar items */
+.glow-gold-md {
+  box-shadow: 0 0 20px 4px oklch(0.72 0.15 82 / 0.20),
+              0 0 40px 8px oklch(0.72 0.15 82 / 0.10);
+}
+
+/* Bright glow — CTA buttons, highlights */
+.glow-gold-lg {
+  box-shadow: 0 0 24px 6px oklch(0.85 0.14 82 / 0.30),
+              0 0 48px 12px oklch(0.72 0.15 82 / 0.15);
+}
+
+/* Deep bronze — active states, selected rows */
+.bg-gold-active {
+  background-color: oklch(0.18 0.04 65);
+  border-color: oklch(0.48 0.12 65);
+}
+
+/* ── Animations ────────────────────────────────────────────────────── */
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }

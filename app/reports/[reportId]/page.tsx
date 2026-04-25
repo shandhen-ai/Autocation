@@ -314,7 +314,7 @@ function ReportDetailContent() {
             >
               {/* Glow */}
               <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-72 rounded-full opacity-20 blur-[80px]" style={{ background: "oklch(0.78 0.16 182)" }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-72 rounded-full opacity-20 blur-[80px]" style={{ background: "oklch(0.72 0.15 82)" }} />
               </div>
               <div className="relative">
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-primary/80 font-sans mb-3">Estimated Savings Found</p>
