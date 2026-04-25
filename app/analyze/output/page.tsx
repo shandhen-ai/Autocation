@@ -11,6 +11,7 @@ import { AppShell } from "@/components/app-shell"
 import { PageHeader } from "@/components/page-header"
 import { getReportById } from "@/lib/mock-data"
 import { useAuth } from "@/hooks/use-auth"
+import { setChatWidgetVisible } from "@/components/chat-widget"
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const
 
@@ -148,6 +149,11 @@ export default function AnalyzeOutputPage() {
   const router = useRouter()
   const { isAuthenticated } = useAuth()
   const [chatOpen, setChatOpen] = useState(false)
+
+  useEffect(() => {
+    setChatWidgetVisible(!chatOpen)
+    return () => setChatWidgetVisible(true)
+  }, [chatOpen])
 
   useEffect(() => {
     if (!isAuthenticated) router.replace("/")

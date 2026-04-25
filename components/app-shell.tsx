@@ -1,16 +1,19 @@
 'use client'
 
-import React, { useState, useCallback } from "react"
-import { useRouter, usePathname } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
-import {
-  LayoutDashboard, PlusCircle, FileText, Settings, HelpCircle,
-  BarChart2, ChevronLeft, ChevronRight,
-} from "lucide-react"
 import { AutocationLogo } from "@/components/autocation-logo"
+import { ChatWidget } from "@/components/chat-widget"
 import { useAuth } from "@/hooks/use-auth"
 import { DEMO_USER } from "@/lib/mock-data/users"
-import { ChatWidget } from "@/components/chat-widget"
+import { AnimatePresence, motion } from "framer-motion"
+import {
+  BarChart2, ChevronLeft, ChevronRight,
+  FileText,
+  HelpCircle,
+  LayoutDashboard, PlusCircle,
+  Settings,
+} from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
+import React, { useCallback, useState } from "react"
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const
 
@@ -71,11 +74,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <button
         key={item.id}
         onClick={() => handleNav(item.id)}
-        className={`relative flex w-full items-center overflow-hidden rounded-xl py-2.5 text-left text-sm font-semibold font-sans transition-colors duration-200 ${
-          sidebarCollapsed ? "justify-center px-0" : "gap-3 px-3"
-        } ${
-          isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-        }`}
+        className={`relative flex w-full items-center overflow-hidden rounded-xl py-2.5 text-left text-sm font-semibold font-sans transition-colors duration-200 ${sidebarCollapsed ? "justify-center px-0" : "gap-3 px-3"
+          } ${isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+          }`}
       >
         {isActive ? (
           <motion.span
@@ -236,7 +237,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <AutocationLogo className="w-[152px]" />
               </div>
               <button onClick={() => setMobileSidebarOpen(false)} className="text-muted-foreground hover:text-foreground">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12 4L4 12M4 4l8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12 4L4 12M4 4l8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
               </button>
             </div>
             <nav className="flex-1 p-3 flex flex-col gap-1">

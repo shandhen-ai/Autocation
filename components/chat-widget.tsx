@@ -64,7 +64,23 @@ function getDummyResponse(message: string): string {
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const
 
+// Shared state so pages can hide the chatbot widget (e.g. when ChatPanel is open)
+let _chatVisible = true
+const _chatVisibilityListeners = new Set<(v: boolean) => void>()
+
+export function setChatWidgetVisible(visible: boolean) {
+  _chatVisible = visible
+  _chatVisibilityListeners.forEach((fn) => fn(visible))
+}
+
 export function ChatWidget() {
+  const [chatVisible, setChatVisible] = useState(_chatVisible)
+
+  useEffect(() => {
+    _chatVisibilityListeners.add(setChatVisible)
+    return () => { _chatVisibilityListeners.delete(setChatVisible) }
+  }, [])
+
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -75,11 +91,17 @@ export function ChatWidget() {
   ])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [unreadCount, setUnreadCount] = useState(0)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
+
+  useEffect(() => {
+    if (!isOpen) return
+    setUnreadCount(0)
+  }, [isOpen])
 
   const handleSend = () => {
     if (!input.trim() || isLoading) return
@@ -93,6 +115,9 @@ export function ChatWidget() {
     setMessages((prev) => [...prev, userMessage])
     setInput("")
     setIsLoading(true)
+    if (!isOpen) {
+      setUnreadCount((c) => c + 1)
+    }
 
     setTimeout(() => {
       const response = getDummyResponse(userMessage.content)
@@ -117,7 +142,8 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Chat Button */}
+      {/* Chat Button — hidden when a page overlay (e.g. ChatPanel) is open */}
+      {chatVisible && (
       <motion.button
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -142,20 +168,23 @@ export function ChatWidget() {
           className="relative flex h-14 w-14 items-center justify-center rounded-full shadow-[0_0_0_1px_oklch(0.72_0.15_82_/_0.15),0_6px_18px_-10px_oklch(0.72_0.15_82_/_0.75)] transition-shadow hover:shadow-[0_0_0_1px_oklch(0.72_0.15_82_/_0.25),0_8px_24px_-10px_oklch(0.72_0.15_82_/_0.85)]"
           style={{ background: "oklch(0.72 0.15 82)" }}
         >
-          {/* Section number badge */}
-          <div
-            className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold"
-            style={{
-              background: "oklch(0.11 0.008 260)",
-              color: "oklch(0.72 0.15 82)",
-              boxShadow: "0 0 8px oklch(0.72 0.15 82 / 0.5)",
-            }}
-          >
-            1
-          </div>
+          {/* Unread count badge — only shown when user has messages */}
+          {unreadCount > 0 && (
+            <div
+              className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold"
+              style={{
+                background: "oklch(0.11 0.008 260)",
+                color: "oklch(0.72 0.15 82)",
+                boxShadow: "0 0 8px oklch(0.72 0.15 82 / 0.5)",
+              }}
+            >
+              {unreadCount}
+            </div>
+          )}
           <MessageCircle className="h-6 w-6 text-black" />
         </div>
       </motion.button>
+      )}
 
       {/* Chat Window */}
       <AnimatePresence>
