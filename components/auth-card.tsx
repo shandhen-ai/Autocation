@@ -210,8 +210,8 @@ export default function AuthenticationCard() {
       <div className="flex w-full flex-col items-center justify-center px-6 lg:w-[55%] lg:px-16">
         <div className={`w-full max-w-[440px] ${getFormHeight()} transition-all duration-500`}>
           {/* Logo */}
-          <div className="">
-            <img src="/autocation-logo.png" alt="Autocation" className="h-auto w-[160px] object-contain" />
+          <div className="flex justify-center">
+            <img src="/autocation-logo.png" alt="Autocation" className="h-auto w-[250px] object-contain" />
           </div>
 
           {/* Form Card */}
