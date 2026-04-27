@@ -1,7 +1,7 @@
 'use client'
 
-import * as React from 'react'
 import * as SwitchPrimitives from '@radix-ui/react-switch'
+import * as React from 'react'
 
 import { cn } from '@/lib/utils'
 
@@ -11,14 +11,16 @@ const Switch = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SwitchPrimitives.Root
     className={cn(
-      'peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border p-[2px] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary/35 data-[state=checked]:bg-primary/90 data-[state=checked]:shadow-[0_0_0_1px_oklch(0.72_0.15_82_/_0.08),0_6px_18px_-10px_oklch(0.72_0.15_82_/_0.75)] data-[state=unchecked]:border-white/10 data-[state=unchecked]:bg-muted/80',
+      'peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border border-border/50 bg-muted/40 shadow-[inset_0_1px_0_oklch(0.95_0.005_80_/_0.04)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-[#22c55e]/70 data-[state=checked]:bg-[#22c55e] data-[state=checked]:shadow-[0_0_18px_rgba(34,197,94,0.55),0_0_34px_rgba(34,197,94,0.22),inset_0_1px_0_rgba(255,255,255,0.22)] data-[state=unchecked]:border-border/50 data-[state=unchecked]:bg-muted/40',
       className,
     )}
     {...props}
     ref={ref}
   >
     <SwitchPrimitives.Thumb
-      className="pointer-events-none block h-5 w-5 rounded-full bg-[oklch(0.97_0.003_80)] shadow-[0_2px_10px_rgba(0,0,0,0.35)] ring-0 transition-transform duration-200 data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
+      className={cn(
+        'pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform duration-200 data-[state=checked]:translate-x-5 data-[state=checked]:shadow-[0_0_10px_rgba(255,255,255,0.55)] data-[state=unchecked]:translate-x-0',
+      )}
     />
   </SwitchPrimitives.Root>
 ))

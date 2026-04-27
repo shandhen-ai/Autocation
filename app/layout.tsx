@@ -1,9 +1,9 @@
-import type { Metadata } from 'next'
-import { Google_Sans, Geist_Mono } from 'next/font/google'
-import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
-import { AuthProvider } from '@/hooks/use-auth'
 import { Toaster } from '@/components/ui/toaster'
+import { AuthProvider } from '@/hooks/use-auth'
+import type { Metadata } from 'next'
+import { Geist_Mono, Google_Sans } from 'next/font/google'
+import './globals.css'
 
 const googleSans = Google_Sans({
   subsets: ["latin"],
@@ -19,9 +19,9 @@ export const metadata: Metadata = {
   title: 'Autocation',
   description: 'AI-powered car contract savings analysis platform.',
   icons: {
-    icon: '/autocation-tab-icon.svg',
-    shortcut: '/autocation-tab-icon.svg',
-    apple: '/autocation-tab-icon.svg',
+    icon: '/autocation-logo.png',
+    shortcut: '/autocation-logo.png',
+    apple: '/autocation-logo.png',
   },
 }
 

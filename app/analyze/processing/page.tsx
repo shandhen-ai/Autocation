@@ -1,11 +1,11 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
-import { Check, Loader2 } from "lucide-react"
 import { AppShell } from "@/components/app-shell"
 import { useAuth } from "@/hooks/use-auth"
+import { AnimatePresence, motion } from "framer-motion"
+import { Check, Loader2 } from "lucide-react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { Suspense, useEffect, useState } from "react"
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const
 
@@ -43,9 +43,8 @@ function ProcessingStage({ stage, completed, active }: {
       transition={{ duration: 0.4, ease: EASE_OUT }}
       className="flex items-center gap-3 py-2"
     >
-      <div className={`size-6 rounded-full flex items-center justify-center shrink-0 ${
-        completed ? "bg-fin-gain/15" : active ? "bg-primary/15" : "bg-muted/30"
-      }`}>
+      <div className={`size-6 rounded-full flex items-center justify-center shrink-0 ${completed ? "bg-fin-gain/15" : active ? "bg-primary/15" : "bg-muted/30"
+        }`}>
         {completed ? (
           <Check className="size-3.5 text-fin-gain" />
         ) : active ? (
@@ -54,9 +53,8 @@ function ProcessingStage({ stage, completed, active }: {
           <div className="size-2 rounded-full bg-muted/50" />
         )}
       </div>
-      <span className={`text-sm font-sans ${
-        completed ? "text-foreground" : active ? "text-foreground font-semibold" : "text-muted-foreground"
-      }`}>
+      <span className={`text-sm font-sans ${completed ? "text-foreground" : active ? "text-foreground font-semibold" : "text-muted-foreground"
+        }`}>
         {stage.label}
       </span>
     </motion.div>
@@ -126,14 +124,14 @@ function ProcessingContent() {
   }, [skip, router])
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-6">
-      <div className="w-full max-w-md">
+    <div className="min-h-full flex flex-col items-center px-6 py-10 lg:py-12">
+      <div className="w-full max-w-md pt-4 lg:pt-6">
         {/* Animated document */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, ease: EASE_OUT }}
-          className="flex justify-center mb-10"
+          className="flex justify-center mb-10 shrink-0"
         >
           <div className="relative">
             {/* Scan line animation */}
@@ -170,7 +168,7 @@ function ProcessingContent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2, ease: EASE_OUT }}
-          className="space-y-1 mb-8"
+          className="space-y-1 mb-8 shrink-0"
         >
           {STAGES.map((stage, i) => (
             <ProcessingStage

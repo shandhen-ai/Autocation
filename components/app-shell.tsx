@@ -9,7 +9,7 @@ import {
   BarChart2, ChevronLeft, ChevronRight,
   FileText,
   HelpCircle,
-  LayoutDashboard, PlusCircle,
+  LayoutDashboard, LogOut, PlusCircle,
   Settings,
 } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
@@ -107,7 +107,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground relative">
+    <div className="relative flex h-screen overflow-hidden bg-background text-foreground">
       {/* Atmospheric bg */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div
@@ -121,19 +121,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Sidebar */}
-      <aside className="hidden md:flex min-h-screen shrink-0 relative z-20 overflow-visible">
+      <aside className="hidden md:flex h-screen shrink-0 relative z-20 overflow-visible">
         <AnimatePresence initial={false}>
           <motion.div
             initial={false}
-            animate={{ width: sidebarCollapsed ? 90 : 258 }}
+            animate={{ width: sidebarCollapsed ? 72 : 240 }}
             transition={{ type: "spring", stiffness: 360, damping: 32, mass: 0.8 }}
-            className="relative h-screen max-h-screen overflow-visible pr-[18px]"
+            className="relative h-screen max-h-screen overflow-visible"
           >
             {/* Collapse toggle */}
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
               aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-              className="absolute right-0 top-1/2 z-30 flex size-9 -translate-y-1/2 items-center justify-center rounded-full border border-primary/25 bg-primary text-primary-foreground shadow-[0_14px_34px_-18px_oklch(0.72_0.15_82_/_0.95)] transition-colors hover:bg-primary/80"
+              className="absolute -right-4 top-1/2 z-30 flex size-9 -translate-y-1/2 items-center justify-center rounded-full border border-primary/25 bg-primary text-primary-foreground shadow-[0_14px_34px_-18px_oklch(0.72_0.15_82_/_0.95)] transition-colors hover:bg-primary/80"
             >
               {sidebarCollapsed ? (
                 <ChevronRight className="size-4 text-primary-foreground" />
@@ -144,7 +144,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
             <div className="flex h-full flex-col overflow-hidden surface-card border-r border-border/60">
               {/* Logo */}
-              <div className="flex h-24 items-center justify-center border-b border-border/40 px-5">
+              <div className="flex h-24 shrink-0 items-center justify-center border-b border-border/40 px-5">
                 <AnimatePresence mode="wait" initial={false}>
                   {!sidebarCollapsed && (
                     <motion.div
@@ -175,7 +175,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </nav>
 
               {/* User */}
-              <div className="h-24 border-t border-border/40 px-4">
+              <div className="shrink-0 border-t border-border/40 px-4 py-4">
                 <AnimatePresence mode="wait" initial={false}>
                   {!sidebarCollapsed ? (
                     <motion.div
@@ -184,9 +184,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.15 }}
-                      className="flex h-full flex-col justify-center"
+                      className="flex flex-col gap-3"
                     >
-                      <div className="flex items-center gap-3 mb-3">
+                      <div className="flex items-center gap-3">
                         <div className="size-9 rounded-xl bg-primary/12 flex items-center justify-center shrink-0 glow-gold-sm">
                           <span className="text-xs font-bold text-primary font-display">
                             {greetingName.slice(0, 2).toUpperCase()}
@@ -199,8 +199,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       </div>
                       <button
                         onClick={handleLogout}
-                        className="w-full text-left text-xs text-muted-foreground hover:text-foreground transition-colors font-sans px-2"
+                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-border/40 bg-muted/30 px-3 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:border-primary/30 hover:bg-primary/10 hover:text-foreground font-sans"
                       >
+                        <LogOut className="size-3.5" />
                         Sign out
                       </button>
                     </motion.div>
@@ -211,13 +212,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.15 }}
-                      className="flex h-full items-center justify-center"
+                      className="flex items-center justify-center"
                     >
-                      <div className="size-9 rounded-xl bg-primary/12 flex items-center justify-center shrink-0 glow-gold-sm cursor-pointer" onClick={handleLogout}>
-                        <span className="text-xs font-bold text-primary font-display">
-                          {greetingName.slice(0, 2).toUpperCase()}
-                        </span>
-                      </div>
+                      <button
+                        onClick={handleLogout}
+                        aria-label="Sign out"
+                        className="size-9 rounded-xl bg-primary/12 flex items-center justify-center shrink-0 glow-gold-sm transition-colors hover:bg-primary/18"
+                      >
+                        <LogOut className="size-4 text-primary" />
+                      </button>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -231,8 +234,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-black/60" onClick={() => setMobileSidebarOpen(false)} />
-          <aside className="relative z-10 w-60 min-h-screen surface-card border-r border-border/60 flex flex-col shrink-0">
-            <div className="p-5 border-b border-border/40 flex items-center justify-between">
+          <aside className="relative z-10 w-60 h-screen surface-card border-r border-border/60 flex flex-col shrink-0">
+            <div className="p-5 border-b border-border/40 flex items-center justify-between shrink-0">
               <div className="flex-1 flex justify-center">
                 <AutocationLogo className="w-[152px]" />
               </div>
@@ -240,10 +243,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12 4L4 12M4 4l8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
               </button>
             </div>
-            <nav className="flex-1 p-3 flex flex-col gap-1">
+            <nav className="flex-1 p-3 flex flex-col gap-1 overflow-hidden">
               {navItems.map(renderNavButton)}
             </nav>
-            <div className="p-4 border-t border-border/40">
+            <div className="p-4 border-t border-border/40 shrink-0">
               <div className="flex items-center gap-3 mb-3">
                 <div className="size-9 rounded-xl bg-primary/12 flex items-center justify-center shrink-0">
                   <span className="text-xs font-bold text-primary font-display">{greetingName.slice(0, 2).toUpperCase()}</span>
@@ -253,16 +256,22 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <p className="text-[10px] text-muted-foreground font-sans truncate">{email}</p>
                 </div>
               </div>
-              <button onClick={handleLogout} className="w-full text-left text-xs text-muted-foreground hover:text-foreground transition-colors font-sans px-2">Sign out</button>
+              <button
+                onClick={handleLogout}
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-border/40 bg-muted/30 px-3 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:border-primary/30 hover:bg-primary/10 hover:text-foreground font-sans"
+              >
+                <LogOut className="size-3.5" />
+                Sign out
+              </button>
             </div>
           </aside>
         </div>
       )}
 
       {/* Main content */}
-      <main className="flex-1 relative z-10 min-w-0 flex flex-col">
+      <main className="relative z-10 flex h-screen min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         {/* Mobile header */}
-        <header className="md:hidden relative border-b border-border/60 bg-card/60 backdrop-blur-xl sticky top-0 z-30 px-4 h-14 flex items-center">
+        <header className="md:hidden relative border-b border-border/60 bg-card/60 backdrop-blur-xl sticky top-0 z-30 px-4 h-14 flex items-center shrink-0">
           <button onClick={() => setMobileSidebarOpen(true)} className="p-2 rounded-lg hover:bg-accent/50">
             <BarChart2 className="size-5 text-muted-foreground" />
           </button>
@@ -271,8 +280,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        {children}
+        <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+          {children}
+        </div>
       </main>
+
       <ChatWidget />
     </div>
   )

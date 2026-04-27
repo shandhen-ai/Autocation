@@ -1,15 +1,27 @@
 'use client'
 
-import React, { useEffect, useState, Suspense } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
-import {
-  Car, DollarSign, Shield, ArrowRight, MessageSquare,
-  X, ChevronRight, CheckCircle, Clock, AlertTriangle,
-  ThumbsUp, TrendingDown, ChevronLeft, Download, Share2, Loader2,
-} from "lucide-react"
 import { AppShell } from "@/components/app-shell"
 import { REPORTS, getReportById } from "@/lib/mock-data"
+import { AnimatePresence, motion } from "framer-motion"
+import {
+  AlertTriangle,
+  ArrowRight,
+  Car,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  DollarSign,
+  Download,
+  Loader2,
+  MessageSquare,
+  Share2,
+  Shield,
+  ThumbsUp, TrendingDown,
+  X,
+} from "lucide-react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { Suspense, useEffect, useState } from "react"
 
 const EASE_OUT = [0.16, 1, 0.3, 1] as const
 
@@ -113,11 +125,10 @@ function ChatPanel({ onClose }: { onClose: () => void }) {
             animate={{ opacity: 1, y: 0 }}
             className={`flex ${msg.from === "ai" ? "justify-start" : "justify-end"}`}
           >
-            <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm font-sans ${
-              msg.from === "ai"
-                ? "bg-primary/10 text-foreground border border-primary/20"
-                : "bg-primary text-primary-foreground"
-            }`}>
+            <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm font-sans ${msg.from === "ai"
+              ? "bg-primary/10 text-foreground border border-primary/20"
+              : "bg-primary text-primary-foreground"
+              }`}>
               {msg.text}
             </div>
           </motion.div>
@@ -276,28 +287,41 @@ function ReportDetailContent() {
     <AppShell>
       <div className="flex-1 flex flex-col">
         {/* Top bar */}
+        {/* Top bar */}
         <div className="border-b border-border/60 bg-card/40 backdrop-blur-xl px-6 lg:px-10 py-4">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground font-sans mb-2">
-            <button onClick={() => router.push("/reports")} className="hover:text-foreground transition-colors flex items-center gap-1">
-              <ChevronLeft className="size-3" />
-              Report History
+          <div className="flex w-full items-start gap-4">
+            <button
+              onClick={() => router.push("/reports")}
+              aria-label="Back to report history"
+              className="mt-1 size-10 shrink-0 rounded-xl bg-muted/40 flex items-center justify-center hover:bg-muted/60 transition-colors border border-border/30"
+            >
+              <ChevronLeft className="size-4 text-muted-foreground" />
             </button>
-            <ChevronRight className="size-3" />
-            <span className="text-foreground font-semibold">{vehicle.year} {vehicle.make} {vehicle.model}</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <button onClick={() => router.push("/reports")} className="size-8 rounded-lg bg-muted/40 flex items-center justify-center hover:bg-muted/60 transition-colors">
-              <ChevronLeft className="size-3.5 text-muted-foreground" />
-            </button>
-            <div className="flex items-center gap-2">
-              <div className="size-8 rounded-xl bg-primary/12 flex items-center justify-center">
-                <Car className="size-4 text-primary" />
+
+            <div className="min-w-0 text-left">
+              <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground font-sans">
+                <button
+                  onClick={() => router.push("/reports")}
+                  className="hover:text-foreground transition-colors"
+                >
+                  Report History
+                </button>
+                <ChevronRight className="size-3" />
+                <span className="text-foreground font-semibold">
+                  {vehicle.year} {vehicle.make} {vehicle.model}
+                </span>
               </div>
-              <div>
-                <h1 className="text-base font-bold text-foreground font-display tracking-tight">
-                  {vehicle.year} {vehicle.make} {vehicle.model} {vehicle.trim}
-                </h1>
-                <p className="text-[11px] text-muted-foreground font-mono">{vehicle.vin}</p>
+
+              <div className="flex items-center gap-2">
+                <div className="size-8 rounded-xl bg-primary/12 flex items-center justify-center shrink-0">
+                  <Car className="size-4 text-primary" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <h1 className="text-base font-bold text-foreground font-display tracking-tight truncate">
+                    {vehicle.year} {vehicle.make} {vehicle.model} {vehicle.trim}
+                  </h1>
+                  <p className="text-[11px] text-muted-foreground font-mono truncate">{vehicle.vin}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -403,9 +427,8 @@ function ReportDetailContent() {
               <div className="space-y-3">
                 {nextSteps.map((step, i) => (
                   <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-muted/20 border border-border/20">
-                    <div className={`size-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
-                      step.status === "available" ? "bg-fin-gain/12" : "bg-muted/40"
-                    }`}>
+                    <div className={`size-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${step.status === "available" ? "bg-fin-gain/12" : "bg-muted/40"
+                      }`}>
                       {step.status === "available" ? (
                         <CheckCircle className="size-3.5 text-fin-gain" />
                       ) : (

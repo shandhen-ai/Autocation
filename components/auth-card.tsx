@@ -89,8 +89,8 @@ export default function AuthenticationCard() {
       setTimeout(() => {
         setCurrentSlide((prev) => (prev + 1) % carouselImages.length)
         setIsTransitioning(false)
-      }, 400)
-    }, 5000)
+      }, 350)
+    }, 2500)
     return () => clearInterval(interval)
   }, [])
 
@@ -210,8 +210,8 @@ export default function AuthenticationCard() {
       <div className="flex w-full flex-col items-center justify-center px-6 lg:w-[55%] lg:px-16">
         <div className={`w-full max-w-[440px] ${getFormHeight()} transition-all duration-500`}>
           {/* Logo */}
-          <div className="mb-8">
-            <img src="/autocation-logo.svg" alt="Autocation" className="h-auto w-[160px] object-contain" />
+          <div className="">
+            <img src="/autocation-logo.png" alt="Autocation" className="h-auto w-[160px] object-contain" />
           </div>
 
           {/* Form Card */}
@@ -689,8 +689,8 @@ export default function AuthenticationCard() {
         </div>
 
         {/* Brand Mark */}
-        <div className="absolute right-12 top-12 z-20">
-          <img src="/autocation-logo.svg" alt="Autocation" className="h-auto w-[100px] object-contain" />
+        <div className="absolute right-8 top-5 z-20">
+          <img src="/autocation-logo.png" alt="Autocation" className="h-auto w-[100px] object-contain" />
         </div>
       </div>
     </div>

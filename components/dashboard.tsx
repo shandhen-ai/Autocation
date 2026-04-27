@@ -1,24 +1,41 @@
 'use client'
 
-import React, { useState, useCallback } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import {
-  ArrowRight, PlusCircle, FileText, Settings, HelpCircle, Bell,
-  ChevronLeft, ChevronRight, TrendingUp, DollarSign, Shield, Truck,
-  Check, BarChart2, LayoutDashboard,
-} from "lucide-react"
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Rectangle,
-  ResponsiveContainer,
-} from "recharts"
-import { useRouter } from "next/navigation"
-import { useAuth } from "@/hooks/use-auth"
+import { AppShell } from "@/components/app-shell"
 import { AutocationLogo } from "@/components/autocation-logo"
+import { useAuth } from "@/hooks/use-auth"
 import {
-  getTotalSavings, getSavingsByCategory, getRecentReports,
+  getRecentReports,
+  getSavingsByCategory,
+  getTotalSavings,
 } from "@/lib/mock-data"
 import { DEMO_USER } from "@/lib/mock-data/users"
-import { ChatWidget } from "@/components/chat-widget"
+import { AnimatePresence, motion } from "framer-motion"
+import {
+  ArrowRight,
+  Bell,
+  Check,
+  ChevronLeft, ChevronRight,
+  DollarSign,
+  FileText,
+  HelpCircle,
+  LayoutDashboard,
+  PlusCircle,
+  Settings,
+  Shield,
+  TrendingUp,
+  Truck
+} from "lucide-react"
+import { useRouter } from "next/navigation"
+import React from "react"
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Rectangle,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis, YAxis,
+} from "recharts"
 
 // ─── Design tokens (preserved from original) ───────────────────────
 
@@ -307,11 +324,9 @@ function Sidebar({
               <button
                 key={item.id}
                 onClick={() => onNav(item.id)}
-                className={`relative flex w-full items-center overflow-hidden rounded-xl py-2.5 text-left text-sm font-semibold font-sans transition-colors duration-200 ${
-                  collapsed ? "justify-center px-0" : "gap-3 px-3"
-                } ${
-                  isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-                }`}
+                className={`relative flex w-full items-center overflow-hidden rounded-xl py-2.5 text-left text-sm font-semibold font-sans transition-colors duration-200 ${collapsed ? "justify-center px-0" : "gap-3 px-3"
+                  } ${isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                  }`}
               >
                 {isActive ? (
                   <motion.span
@@ -437,250 +452,185 @@ function StatCard({ label, value, sublabel, icon: Icon, delay = 0 }: {
 
 export default function AutolocationDashboard() {
   const router = useRouter()
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const activePage = "dashboard"
-
-  const handleNav = useCallback((page: string) => {
-    setMobileSidebarOpen(false)
-    if (page === "analyze") {
-      router.push("/analyze/new")
-    } else if (page === "history") {
-      router.push("/reports")
-    } else if (page === "settings") {
-      router.push("/settings")
-    } else if (page === "help") {
-      router.push("/help")
-    } else if (page === "dashboard") {
-      router.push("/dashboard")
-    }
-  }, [router])
 
   // Demo: demo account is logged in
   const greetingName = DEMO_USER.name
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground relative">
-      {/* Atmospheric bg */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full opacity-[0.03] blur-[120px] animate-float" style={{ background: C.gold }} />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full opacity-[0.02] blur-[100px] animate-float" style={{ background: C.azure, animationDelay: "3s" }} />
-      </div>
+    <AppShell>
+      <motion.div
+        key="dashboard"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.35, ease: EASE_OUT }}
+        className="p-6 lg:p-10"
+      >
+        {/* Greeting */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: EASE_OUT }}
+          className="mb-8"
+        >
+          <h1 className="text-2xl lg:text-3xl font-bold text-foreground font-display tracking-tight">
+            Welcome back, {greetingName} 👋
+          </h1>
+          <p className="text-sm text-muted-foreground font-sans mt-1">
+            Here's an overview of your saved reports and savings.
+          </p>
+        </motion.div>
 
-      {/* Sidebar */}
-      <div className="hidden md:block relative z-10">
-        <Sidebar
-          activePage={activePage}
-          onNav={handleNav}
-          collapsed={sidebarCollapsed}
-          showCollapseToggle
-          onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-        />
-      </div>
-
-      {/* Mobile sidebar overlay */}
-      {mobileSidebarOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setMobileSidebarOpen(false)} />
-          <div className="relative z-10">
-            <Sidebar activePage={activePage} onNav={handleNav} />
+        {/* CTA Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 16, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.05, ease: EASE_OUT }}
+          className="mb-8 rounded-2xl surface-card p-6 relative overflow-hidden cursor-pointer group"
+          style={{ boxShadow: CARD_SHADOW }}
+          onClick={() => router.push("/analyze/new")}
+        >
+          <GlowOrb className="w-48 h-48 -top-24 -right-24 bg-primary/8" />
+          <div className="flex items-center justify-between relative z-10">
+            <div>
+              <h2 className="text-lg font-bold text-foreground font-display mb-1">
+                Analyze a new vehicle contract →
+              </h2>
+              <p className="text-sm text-muted-foreground font-sans">
+                Upload your documents and get a savings report in 60 seconds.
+              </p>
+            </div>
+            <div className="hidden sm:flex items-center gap-3">
+              <div className="flex -space-x-2">
+                {[FileText, Shield, Truck, DollarSign].map((Icon, i) => (
+                  <div key={i} className="size-9 rounded-xl bg-card border border-border/50 flex items-center justify-center">
+                    <Icon className="size-4 text-muted-foreground" />
+                  </div>
+                ))}
+              </div>
+              <ArrowRight className="size-5 text-primary group-hover:translate-x-1 transition-transform" />
+            </div>
           </div>
+        </motion.div>
+
+        {/* Stats Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          <StatCard
+            label="Total Savings Found"
+            value={`$${totalSavings.toLocaleString()}`}
+            sublabel={`across ${reportCount} reports`}
+            icon={DollarSign}
+            delay={0}
+          />
+          <StatCard
+            label="Avg. Confidence"
+            value={`${Math.round(recentReports.reduce((s, r) => s + r.confidence, 0) / recentReports.length)}%`}
+            sublabel="Across all analyses"
+            icon={Shield}
+            delay={0.06}
+          />
+          <StatCard
+            label="Reports Analyzed"
+            value={String(reportCount)}
+            sublabel="Vehicle contracts reviewed"
+            icon={FileText}
+            delay={0.12}
+          />
         </div>
-      )}
 
-      <ChatWidget />
-
-      {/* Main content */}
-      <main className="flex-1 relative z-10 min-w-0">
-        {/* Mobile header */}
-        <header className="md:hidden relative border-b border-border/60 bg-card/60 backdrop-blur-xl sticky top-0 z-30 px-4 h-14 flex items-center">
-          <button onClick={() => setMobileSidebarOpen(true)} className="p-2 rounded-lg hover:bg-accent/50">
-            <BarChart2 className="size-5 text-muted-foreground" />
-          </button>
-          <div className="pointer-events-none absolute left-1/2 -translate-x-1/2">
-            <AutocationLogo className="w-[132px]" />
-          </div>
-        </header>
-
-        {/* Page content */}
-        <AnimatePresence mode="wait">
-          {activePage === "dashboard" && (
-            <motion.div
-              key="dashboard"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35, ease: EASE_OUT }}
-              className="p-6 lg:p-10"
-            >
-              {/* Greeting */}
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: EASE_OUT }}
-                className="mb-8"
-              >
-                <h1 className="text-2xl lg:text-3xl font-bold text-foreground font-display tracking-tight">
-                  Welcome back, {greetingName} 👋
-                </h1>
-                <p className="text-sm text-muted-foreground font-sans mt-1">
-                  Here's an overview of your saved reports and savings.
+        {/* Charts + Activity row */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
+          {/* Category chart — spans 2 cols */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: EASE_OUT }}
+            className="lg:col-span-2 rounded-2xl surface-card p-5 lg:p-6"
+            style={{ boxShadow: CARD_SHADOW }}
+          >
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h3 className="text-sm font-bold text-foreground tracking-tight font-display">
+                  Savings by Category
+                </h3>
+                <p className="text-[11px] text-muted-foreground mt-0.5 font-sans">
+                  Aggregated across all {reportCount} reports
                 </p>
-              </motion.div>
-
-              {/* CTA Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 16, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.05, ease: EASE_OUT }}
-                className="mb-8 rounded-2xl surface-card p-6 relative overflow-hidden cursor-pointer group"
-                style={{ boxShadow: CARD_SHADOW }}
-                onClick={() => router.push("/analyze/new")}
-              >
-                <GlowOrb className="w-48 h-48 -top-24 -right-24 bg-primary/8" />
-                <div className="flex items-center justify-between relative z-10">
-                  <div>
-                    <h2 className="text-lg font-bold text-foreground font-display mb-1">
-                      Analyze a new vehicle contract →
-                    </h2>
-                    <p className="text-sm text-muted-foreground font-sans">
-                      Upload your documents and get a savings report in 60 seconds.
-                    </p>
-                  </div>
-                  <div className="hidden sm:flex items-center gap-3">
-                    <div className="flex -space-x-2">
-                      {[FileText, Shield, Truck, DollarSign].map((Icon, i) => (
-                        <div key={i} className="size-9 rounded-xl bg-card border border-border/50 flex items-center justify-center">
-                          <Icon className="size-4 text-muted-foreground" />
-                        </div>
-                      ))}
-                    </div>
-                    <ArrowRight className="size-5 text-primary group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Stats Row */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                <StatCard
-                  label="Total Savings Found"
-                  value={`$${totalSavings.toLocaleString()}`}
-                  sublabel={`across ${reportCount} reports`}
-                  icon={DollarSign}
-                  delay={0}
-                />
-                <StatCard
-                  label="Avg. Confidence"
-                  value={`${Math.round(recentReports.reduce((s, r) => s + r.confidence, 0) / recentReports.length)}%`}
-                  sublabel="Across all analyses"
-                  icon={Shield}
-                  delay={0.06}
-                />
-                <StatCard
-                  label="Reports Analyzed"
-                  value={String(reportCount)}
-                  sublabel="Vehicle contracts reviewed"
-                  icon={FileText}
-                  delay={0.12}
-                />
               </div>
-
-              {/* Charts + Activity row */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
-                {/* Category chart — spans 2 cols */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.15, ease: EASE_OUT }}
-                  className="lg:col-span-2 rounded-2xl surface-card p-5 lg:p-6"
-                  style={{ boxShadow: CARD_SHADOW }}
-                >
-                  <div className="flex items-center justify-between mb-5">
-                    <div>
-                      <h3 className="text-sm font-bold text-foreground tracking-tight font-display">
-                        Savings by Category
-                      </h3>
-                      <p className="text-[11px] text-muted-foreground mt-0.5 font-sans">
-                        Aggregated across all {reportCount} reports
-                      </p>
-                    </div>
-                  </div>
-                  <SavingsBarChart data={savingsByCategory} />
-                  {/* Legend */}
-                  <div className="flex flex-wrap gap-x-5 gap-y-2 mt-4">
-                    {savingsByCategory.map((item) => (
-                      <div key={item.category} className="flex items-center gap-2 text-xs">
-                        <div className="size-2.5 rounded-full" style={{ backgroundColor: item.color }} />
-                        <span className="text-muted-foreground font-sans">{item.category}</span>
-                        <span className="font-mono font-bold text-foreground">${item.amount.toLocaleString()}</span>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-
-                {/* Activity feed */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2, ease: EASE_OUT }}
-                  className="rounded-2xl surface-card p-5 lg:p-6"
-                  style={{ boxShadow: CARD_SHADOW }}
-                >
-                  <h3 className="text-sm font-bold text-foreground tracking-tight font-display mb-4">
-                    Activity Feed
-                  </h3>
-                  <ActivityFeed />
-                </motion.div>
-              </div>
-
-              {/* Recent Reports */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.25, ease: EASE_OUT }}
-                className="rounded-2xl surface-card p-5 lg:p-6"
-                style={{ boxShadow: CARD_SHADOW }}
-              >
-                <div className="flex items-center justify-between mb-5">
-                  <div>
-                    <h3 className="text-sm font-bold text-foreground tracking-tight font-display">
-                      Recent Reports
-                    </h3>
-                    <p className="text-[11px] text-muted-foreground mt-0.5 font-sans">
-                      Your latest vehicle analyses
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => router.push("/reports")}
-                    className="flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary/80 transition-colors font-sans"
-                  >
-                    View all <ChevronRight className="size-3.5" />
-                  </button>
+            </div>
+            <SavingsBarChart data={savingsByCategory} />
+            {/* Legend */}
+            <div className="flex flex-wrap gap-x-5 gap-y-2 mt-4">
+              {savingsByCategory.map((item) => (
+                <div key={item.category} className="flex items-center gap-2 text-xs">
+                  <div className="size-2.5 rounded-full" style={{ backgroundColor: item.color }} />
+                  <span className="text-muted-foreground font-sans">{item.category}</span>
+                  <span className="font-mono font-bold text-foreground">${item.amount.toLocaleString()}</span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {recentReports.map((report, i) => (
-                    <RecentReportCard key={report.id} report={report} delay={0.1 + i * 0.08} />
-                  ))}
-                </div>
-              </motion.div>
+              ))}
+            </div>
+          </motion.div>
 
-              {/* Footer */}
-              <footer className="mt-12 pt-6 border-t border-border/40">
-                <div className="flex items-center justify-between text-[11px] text-muted-foreground font-sans">
-                  <div className="flex items-center gap-2">
-                    <div className="size-2 rounded-full bg-fin-gain animate-pulse-soft" />
-                    <span className="font-medium">All systems operational</span>
-                  </div>
-                  <span className="font-mono text-muted-foreground/60">
-                    Last updated: Jun 20, 2026 — 14:32 UTC
-                  </span>
-                </div>
-              </footer>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
-    </div>
+          {/* Activity feed */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: EASE_OUT }}
+            className="rounded-2xl surface-card p-5 lg:p-6"
+            style={{ boxShadow: CARD_SHADOW }}
+          >
+            <h3 className="text-sm font-bold text-foreground tracking-tight font-display mb-4">
+              Activity Feed
+            </h3>
+            <ActivityFeed />
+          </motion.div>
+        </div>
+
+        {/* Recent Reports */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.25, ease: EASE_OUT }}
+          className="rounded-2xl surface-card p-5 lg:p-6"
+          style={{ boxShadow: CARD_SHADOW }}
+        >
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h3 className="text-sm font-bold text-foreground tracking-tight font-display">
+                Recent Reports
+              </h3>
+              <p className="text-[11px] text-muted-foreground mt-0.5 font-sans">
+                Your latest vehicle analyses
+              </p>
+            </div>
+            <button
+              onClick={() => router.push("/reports")}
+              className="flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary/80 transition-colors font-sans"
+            >
+              View all <ChevronRight className="size-3.5" />
+            </button>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {recentReports.map((report, i) => (
+              <RecentReportCard key={report.id} report={report} delay={0.1 + i * 0.08} />
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Footer */}
+        <footer className="mt-12 pt-6 border-t border-border/40">
+          <div className="flex items-center justify-between text-[11px] text-muted-foreground font-sans">
+            <div className="flex items-center gap-2">
+              <div className="size-2 rounded-full bg-fin-gain animate-pulse-soft" />
+              <span className="font-medium">All systems operational</span>
+            </div>
+            <span className="font-mono text-muted-foreground/60">
+              Last updated: Jun 20, 2026 — 14:32 UTC
+            </span>
+          </div>
+        </footer>
+      </motion.div>
+    </AppShell>
   )
 }
 
@@ -695,3 +645,4 @@ function Car({ className }: { className?: string }) {
     </svg>
   )
 }
+
